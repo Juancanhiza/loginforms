@@ -28,20 +28,21 @@ function LoginForm(props) {
         axios.post(API_BASE_URL+'/login', payload)
             .then(function (response) {
                 if(response.status === 200){
-                    setState(prevState => ({
-                        ...prevState,
-                        'successMessage' : 'Login successful. Redirecting to home page..'
-                    }))
                     //localStorage.setItem(ACCESS_TOKEN_NAME,response.data.token);
-                    console.log("Se hizo el login correctamente")
-                    redirectToHome();
-                    props.showError(null)
-                }
-                else if(response.code === 204){
-                    props.showError("Username and password do not match");
+                    if (response.data.estado === 0){
+                        alert("Se realizó el login correctamente");
+                        setState(prevState => ({
+                            ...prevState,
+                            'successMessage' : 'Login successful. Redirecting to home page..'
+                        }))
+                        redirectToHome();
+                        props.showError(null)
+                    }else if (response.data.estado === -1){
+                        props.showError(response.data.mensaje);
+                    }
                 }
                 else{
-                    props.showError("Username does not exists");
+                    props.showError("No se puede establecer conexión con el servidor");
                 }
             })
             .catch(function (error) {
