@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import './LoginForm.css';
-import {API_BASE_URL, ACCESS_TOKEN_NAME} from '../../constants/apiContants';
+//import {API_BASE_URL, ACCESS_TOKEN_NAME} from '../../constants/apiContants';
+import {API_BASE_URL} from '../../constants/apiContants';
 import { withRouter } from "react-router-dom";
 
 function LoginForm(props) {
@@ -21,17 +22,18 @@ function LoginForm(props) {
     const handleSubmitClick = (e) => {
         e.preventDefault();
         const payload={
-            "email":state.email,
+            "usuario":state.email,
             "password":state.password,
         }
-        axios.post(API_BASE_URL+'/user/login', payload)
+        axios.post(API_BASE_URL+'/login', payload)
             .then(function (response) {
                 if(response.status === 200){
                     setState(prevState => ({
                         ...prevState,
                         'successMessage' : 'Login successful. Redirecting to home page..'
                     }))
-                    localStorage.setItem(ACCESS_TOKEN_NAME,response.data.token);
+                    //localStorage.setItem(ACCESS_TOKEN_NAME,response.data.token);
+                    console.log("Se hizo el login correctamente")
                     redirectToHome();
                     props.showError(null)
                 }

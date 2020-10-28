@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import './RegistrationForm.css';
-import {API_BASE_URL, ACCESS_TOKEN_NAME} from '../../constants/apiContants';
+//import {API_BASE_URL, ACCESS_TOKEN_NAME} from '../../constants/apiContants';
+import {API_BASE_URL} from '../../constants/apiContants';
 import { withRouter } from "react-router-dom";
 
 function RegistrationForm(props) {
     const [state , setState] = useState({
+        nombre : "",
+        apellido : "",
         email : "",
         password : "",
         confirmPassword: "",
@@ -19,20 +22,22 @@ function RegistrationForm(props) {
         }))
     }
     const sendDetailsToServer = () => {
-        if(state.email.length && state.password.length) {
+        if(state.email.length && state.password.length && state.nombre.length && state.apellido.length) {
             props.showError(null);
             const payload={
-                "email":state.email,
+                "nombre":state.nombre,
+                "apellido":state.apellido,
+                "correo":state.email,
                 "password":state.password,
             }
-            axios.post(API_BASE_URL+'/user/register', payload)
+            axios.post(API_BASE_URL+'/registro', payload)
                 .then(function (response) {
                     if(response.status === 200){
                         setState(prevState => ({
                             ...prevState,
                             'successMessage' : 'Registration successful. Redirecting to home page..'
                         }))
-                        localStorage.setItem(ACCESS_TOKEN_NAME,response.data.token);
+                        //localStorage.setItem(ACCESS_TOKEN_NAME,response.data.token);
                         redirectToHome();
                         props.showError(null)
                     } else{
@@ -66,6 +71,24 @@ function RegistrationForm(props) {
     return(
         <div className="card col-12 col-lg-4 login-card mt-2 hv-center">
             <form>
+                <div className="form-group text-left">
+                <label htmlFor="exampleInputNombre1">Nombre</label>
+                <input className="form-control" 
+                       id="nombre" 
+                       placeholder="Ingrese name" 
+                       value={state.nombre}
+                       onChange={handleChange}
+                />
+                </div>
+                <div className="form-group text-left">
+                <label htmlFor="exampleInputApellido1">Apellido</label>
+                <input className="form-control" 
+                       id="apellido" 
+                       placeholder="Ingrese apellido" 
+                       value={state.apellido}
+                       onChange={handleChange}
+                />
+                </div>
                 <div className="form-group text-left">
                 <label htmlFor="exampleInputEmail1">Email address</label>
                 <input type="email" 

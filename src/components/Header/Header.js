@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
-import { ACCESS_TOKEN_NAME } from '../../constants/apiContants';
+//import { ACCESS_TOKEN_NAME } from '../../constants/apiContants';
 function Header(props) {
     const capitalize = (s) => {
         if (typeof s !== 'string') return ''
@@ -20,7 +20,7 @@ function Header(props) {
         }
     }
     function handleLogout() {
-        localStorage.removeItem(ACCESS_TOKEN_NAME)
+        //localStorage.removeItem(ACCESS_TOKEN_NAME)
         props.history.push('/login')
     }
     return(
